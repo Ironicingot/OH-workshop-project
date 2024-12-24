@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team B: Guesser</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+
+        .splash-screen, .main-content {
+            text-align: center;
+            width: 100%;
+            position: absolute;
+            transition: opacity 1s ease;
+        }
+
+        .splash-screen {
+            background: #ffffff;
+        }
+
+        .splash-screen h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            animation: fadeIn 2s ease-in-out forwards;
+        }
+
+        .splash-screen button {
+            padding: 10px 20px;
+            font-size: 18px;
+            border: none;
+            background-color: #007bff;
+            color: #ffffff;
+            border-radius: 5px;
+            cursor: pointer;
+            animation: fadeIn 3s ease-in-out forwards;
+            opacity: 0;
+        }
+
+        .splash-screen button:hover {
+            background-color: #0056b3;
+        }
+
+        .main-content {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .main-content.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        input, p {
+            font-size: 18px;
+            margin: 10px 0;
+        }
+
+        input {
+            padding: 8px 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Splash Screen -->
+    <div class="splash-screen">
+        <h1>Team B: Guesser</h1>
+        <button id="startButton">Start</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1>Real-Time Caesar Cipher</h1>
+        <label for="inputText">Type your text:</label><br />
+        <input type="text" id="inputText" placeholder="Enter text here..." /><br />
+        <label for="shift">Shift:</label><br />
+        <input type="number" id="shift" value="7" min="0" max="25" /><br />
+        <p>Encrypted Text: <span id="encryptedText"></span></p>
+    </div>
+
+    <script>
+        // Function to handle Caesar Cipher
+        function caesarCipher(text, shift) {
+            shift %= 26;
+            return text.split('').map(char => {
+                if (char.match(/[a-z]/i)) {
+                    const code = char.charCodeAt(0);
+                    const base = char === char.toUpperCase() ? 65 : 97;
+                    return String.fromCharCode(((code - base + shift) % 26) + base);
+                }
+                return char;
+            }).join('');
+        }
+
+        // DOM Elements
+        const startButton = document.getElementById('startButton');
+        const splashScreen = document.querySelector('.splash-screen');
+        const mainContent = document.querySelector('.main-content');
+        const inputText = document.getElementById('inputText');
+        const shiftInput = document.getElementById('shift');
+        const encryptedText = document.getElementById('encryptedText');
+
+        // Transition from splash screen to main content
+        startButton.addEventListener('click', () => {
+            splashScreen.style.opacity = '0';
+            setTimeout(() => {
+                splashScreen.style.display = 'none';
+                mainContent.classList.add('active');
+            }, 1000); // Match the transition duration
+        });
+
+        // Real-time Caesar Cipher
+        inputText.addEventListener('input', () => {
+            const text = inputText.value;
+            const shift = parseInt(shiftInput.value, 10);
+            encryptedText.textContent = caesarCipher(text, shift);
+        });
+
+        shiftInput.addEventListener('input', () => {
+            const text = inputText.value;
+            const shift = parseInt(shiftInput.value, 10);
+            encryptedText.textContent = caesarCipher(text, shift);
+        });
+    </script>
+</body>
+</html>
