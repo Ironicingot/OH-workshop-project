@@ -86,7 +86,8 @@
             pointer-events: auto;
             transition: opacity 1s ease-in-out, visibility 0s linear 0s;
         }
-        input[type="text"], input[type="number"] {
+        
+        input[type="text"], input[type="number"], input[type="password"] {
             width: 100%; /* Make it responsive */
             max-width: 400px; /* Set a max width */
             padding: 10px 15px;
@@ -98,7 +99,7 @@
             transition: box-shadow 0.3s ease, border-color 0.3s ease;
         }
 
-        input[type="text"]:focus, input[type="number"]:focus {
+        input[type="text"]:focus, input[type="number"]:focus, input[type="password"]:focus {
             border-color: #007bff;
             box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
         }
@@ -115,10 +116,18 @@
     <!-- Main Content -->
     <div class="main-content">
         <h1>Translator</h1>
+
+        <!-- Secret Code to Reveal Shift Input -->
+        <label for="secretCode" id="secretCodeLabel">Enter Secret Code to reveal Shift:</label><br />
+        <input type="password" id="secretCode" placeholder="Enter code to reveal shift" /><br />
+
+        <!-- Shift Input and Label -->
+        <label for="shift" id="shiftLabel" style="display: none;">Shift:</label><br />
+        <input type="number" id="shift" value="7" min="0" max="25" style="display: none;" /><br />
+
         <label for="inputText">Type your text:</label><br />
         <input type="text" id="inputText" placeholder="Enter text here..." /><br />
-        <label for="shift">Shift:</label><br />
-        <input type="number" id="shift" value="7" /><br />
+        
         <p>Encrypted Text: <span id="encryptedText"></span></p>
     </div>
 
@@ -145,6 +154,9 @@
         const inputText = document.getElementById('inputText');
         const shiftInput = document.getElementById('shift');
         const encryptedText = document.getElementById('encryptedText');
+        const secretCodeInput = document.getElementById('secretCode');
+        const shiftLabel = document.getElementById('shiftLabel');
+        const secretCodeLabel = document.getElementById('secretCodeLabel');
 
         // Transition from splash screen to main content
         startButton.addEventListener('click', () => {
@@ -153,6 +165,19 @@
                 splashScreen.style.display = 'none';
                 mainContent.classList.add('active');
             }, 1000); // Match the transition duration
+        });
+
+        // Secret Code to Reveal Shift Input
+        secretCodeInput.addEventListener('input', () => {
+            const secretCode = secretCodeInput.value;
+            const correctCode = "revealshift"; // Define your secret code here
+
+            if (secretCode === correctCode) {
+                shiftInput.style.display = "inline-block";
+                shiftLabel.style.display = "inline-block";
+                secretCodeInput.style.display = "none"; // Hide the secret code input
+                secretCodeLabel.style.display = "none"; // Hide the secret code label
+            }
         });
 
         // Real-time Caesar Cipher
