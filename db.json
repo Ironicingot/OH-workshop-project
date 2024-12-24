@@ -1,0 +1,94 @@
+{
+    "themes": [
+        {
+            "theme": "Movies",
+            "words": [
+                "Titanic",
+                "Inception",
+                "The Godfather",
+                "Avatar",
+                "Jurassic Park",
+                "Frozen",
+                "Harry Potter",
+                "The Avengers",
+                "Spider-Man",
+                "The Lion King"
+            ]
+        },
+        {
+            "theme": "Animals",
+            "words": [
+                "Elephant",
+                "Penguin",
+                "Kangaroo",
+                "Giraffe",
+                "Tiger",
+                "Dolphin",
+                "Panda",
+                "Eagle",
+                "Shark",
+                "Cheetah"
+            ]
+        },
+        {
+            "theme": "Sports",
+            "words": [
+                "Soccer",
+                "Basketball",
+                "Tennis",
+                "Cricket",
+                "Baseball",
+                "Hockey",
+                "Golf",
+                "Swimming",
+                "Volleyball",
+                "Boxing"
+            ]
+        },
+        {
+            "theme": "Famous People",
+            "words": [
+                "Albert Einstein",
+                "Leonardo da Vinci",
+                "Taylor Swift",
+                "Michael Jackson",
+                "Oprah Winfrey",
+                "Elon Musk",
+                "William Shakespeare",
+                "Barack Obama",
+                "Beyoncé",
+                "Rihanna"
+            ]
+        },
+        {
+            "theme": "Food",
+            "words": [
+                "Pizza",
+                "Sushi",
+                "Burger",
+                "Spaghetti",
+                "Ice Cream",
+                "Tacos",
+                "Donuts",
+                "Salad",
+                "Chocolate",
+                "Fries"
+            ]
+        },
+        {
+            "theme": "Places",
+            "words": [
+                "Paris",
+                "New York",
+                "Tokyo",
+                "Sydney",
+                "London",
+                "Rome",
+                "Dubai",
+                "Bangkok",
+                "Iceland",
+                "Hawaii"
+            ]
+        }
+    ]
+}
