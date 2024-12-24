@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,73 +8,85 @@
     <title>Team B: Guesser</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Arial', sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f0f0f0;
+            background: linear-gradient(135deg, #74ebd5, #9face6);
+            overflow: hidden;
         }
-
-        .splash-screen, .main-content {
-            text-align: center;
-            width: 100%;
-            position: absolute;
-            transition: opacity 1s ease;
-        }
-
+        
         .splash-screen {
-            background: #ffffff;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 40px 60px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1.5s ease-in-out forwards;
         }
-
+    
         .splash-screen h1 {
             font-size: 3rem;
             margin-bottom: 20px;
-            animation: fadeIn 2s ease-in-out forwards;
+            color: #333;
+            animation: slideIn 1.5s ease-in-out forwards;
         }
-
+    
         .splash-screen button {
-            padding: 10px 20px;
-            font-size: 18px;
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #fff;
+            background: #007bff;
             border: none;
-            background-color: #007bff;
-            color: #ffffff;
             border-radius: 5px;
             cursor: pointer;
-            animation: fadeIn 3s ease-in-out forwards;
-            opacity: 0;
+            transition: background-color 0.3s, transform 0.3s;
         }
-
+    
         .splash-screen button:hover {
-            background-color: #0056b3;
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+    
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: scale(0.9); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+    
+        @keyframes slideIn {
+            0% { opacity: 0; transform: translateY(-20px); }
+            100% { opacity: 1; transform: translateY(0); }
         }
 
         .main-content {
+            position: absolute; /* Removes the content from the document flow */
+            top: 0;
+            left: 0;
+            width: 100%; /* Ensures it covers the full width when visible */
+            height: 100%; /* Ensures it covers the full height when visible */
+            display: flex; /* Optional: Aligns content when active */
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
             opacity: 0;
+            visibility: hidden;
             pointer-events: none;
+            transition: opacity 1s ease-in-out, visibility 0s linear 1s;
         }
 
         .main-content.active {
             opacity: 1;
+            visibility: visible;
             pointer-events: auto;
-        }
-
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-
-        input, p {
-            font-size: 18px;
-            margin: 10px 0;
-        }
-
-        input {
-            padding: 8px 12px;
-            border: 1px solid #ccc;
-            border-radius: 4px;
+            transition: opacity 1s ease-in-out, visibility 0s linear 0s;
         }
     </style>
 </head>
