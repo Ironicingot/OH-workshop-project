@@ -87,84 +87,133 @@
             transition: opacity 1s ease-in-out, visibility 0s linear 0s;
         }
 
-        input[type="text"], input[type="number"], input[type="password"] {
-            width: 100%;
-            max-width: 400px;
-            padding: 10px 15px;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            outline: none;
-            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        .movies{
+            position:absolute;
+            width:100%;
+            display:grid;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 1s ease-in-out, visibility 0s linear 1s;
         }
 
-        input[type="text"]:focus, input[type="number"]:focus, input[type="password"]:focus {
-            border-color: #007bff;
-            box-shadow: 0 0 10px rgba(0, 123, 255, 0.5);
+        .movies.active{
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transition: opacity 1s ease-in-out, visibility 0s linear 0s;
         }
 
-        #secretCode {
-            width: 100%; /* Makes input fill the entire width of the box */
-            padding: 8px;
-            font-size: 1rem;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            box-sizing: border-box; /* Ensures padding doesn't cause overflow */
+
+        .animals{
+            position:absolute;
+            width:100%;
+            display:grid;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 1s ease-in-out, visibility 0s linear 1s;
+        }
+
+        .animals.active{
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transition: opacity 1s ease-in-out, visibility 0s linear 0s;
+        }
+
+        .sports{
+            position:absolute;
+            width:100%;
+            display:grid;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 1s ease-in-out, visibility 0s linear 1s;
+        }
+
+        .sports.active{
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transition: opacity 1s ease-in-out, visibility 0s linear 0s;
         }
         
-        /* Positioning the secret code input box and button */
-        #secretCodeBox {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-            display: none;
-            transition: opacity 0.5s ease-in-out;
-            width: 250px;
-            box-sizing: border-box; /* Ensure the padding doesn't increase the overall width */
+
+        .famous{
+            position:absolute;
+            width:100%;
+            display:grid;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 1s ease-in-out, visibility 0s linear 1s;
         }
 
-        #showSecretCodeBtn {
-            font-size: 0.9rem;
-            color: #007bff;
-            background: none;
-            border: none;
-            cursor: pointer;
-            transition: color 0.3s ease;
+        .famous.active{
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transition: opacity 1s ease-in-out, visibility 0s linear 0s;
         }
 
-        #showSecretCodeBtn:hover {
-            color: #0056b3;
+
+        .food{
+            position:absolute;
+            width:100%;
+            display:grid;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 1s ease-in-out, visibility 0s linear 1s;
         }
 
-        /* Close button style */
-        .close-btn {
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            font-size: 1.5rem;
-            color: #999;
-            background: none;
-            border: none;
-            cursor: pointer;
+        .food.active{
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transition: opacity 1s ease-in-out, visibility 0s linear 0s;
         }
 
-        .close-btn:hover {
-            color: #d9534f;
+        .places{
+            position:absolute;
+            width:100%;
+            display:grid;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 1s ease-in-out, visibility 0s linear 1s;
         }
+
+        .places.active{
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transition: opacity 1s ease-in-out, visibility 0s linear 0s;
+        }
+
         .container {
             display: grid;
             grid-template-columns: auto auto auto;
             column-gap: 200px;
             gap: 20px;
             padding: 20px; /* Adds padding inside the container */
+            justify-content: center;
         }
 
-        .container > div {
+        .container > button {
             background-color: #ffffff;
             border: 2px solid #007bff;
             width: 150px;
@@ -180,11 +229,17 @@
             justify-content: center;
         }
 
-        .container > div:hover {
+        .container > button:hover {
             transform: scale(1.05); /* Slightly enlarges on hover */
             box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
         }
 
+        .container > h2 {
+            margin-top: 20px; /* Adds space between the title and the random word */
+            font-size: 2rem;
+            color: #333;
+        }
+        
 
     </style>
 </head>
@@ -199,8 +254,32 @@
     <div class="main-content">
         <h1>Themes:</h1>
         <div class="container" id="themes">
-            
         </div>
+    </div>
+
+    <div class="movies">
+        <h1>Theme Selected: Movies</h1>
+        <div class="container"></div>
+    </div>
+    <div class="animals">
+        <h1>Theme Selected: Animals</h1>
+        <div></div>
+    </div>
+    <div class="sports">
+        <h1>Theme Selected: Sports</h1>
+        <div class="container"></div>
+    </div>
+    <div class="famous">
+        <h1>Theme Selected: Famous People</h1>
+        <div class="container"></div>
+    </div>
+    <div class="food">
+        <h1>Theme Selected: Food</h1>
+        <div class="container"></div>
+    </div>
+    <div class="places">
+        <h1>Theme Selected: Places</h1>
+        <div class="container"></div>
     </div>
 
     <script>
@@ -209,16 +288,7 @@
         const startButton = document.getElementById('startButton');
         const splashScreen = document.querySelector('.splash-screen');
         const mainContent = document.querySelector('.main-content');
-        const inputText = document.getElementById('inputText');
-        const shiftInput = document.getElementById('shift');
-        const encryptedText = document.getElementById('encryptedText');
-        const secretCodeInput = document.getElementById('secretCode');
-        const shiftLabel = document.getElementById('shiftLabel');
-        const secretCodeLabel = document.getElementById('secretCodeLabel');
-        const showSecretCodeBtn = document.getElementById('showSecretCodeBtn');
-        const secretCodeBox = document.getElementById('secretCodeBox');
-        const closeSecretCodeBoxBtn = document.getElementById('closeSecretCodeBox');
-
+    
         // Transition from splash screen to main content
         startButton.addEventListener('click', () => {
             splashScreen.style.opacity = '0';
@@ -233,18 +303,37 @@
                 .then(response => response.json()) // Parse the JSON response
                 .then(data => {
                     const themesContainer = document.getElementById("themes"); // Select the container where themes will be displayed
+                    const themeDivs = document.querySelectorAll('.movies, .animals, .sports, .famous, .food, .places');
 
                     // Iterate through each theme in the data
                     data.themes.forEach(themeObject => {
-                        const themeElement = document.createElement("div"); // Create a new paragraph element
+                        const themeElement = document.createElement("button"); // Create a new paragraph element
+                        themeElement.setAttribute("id",themeObject.theme.toLowerCase().replace(" ","")+'Button')
                         themeElement.textContent = themeObject.theme; // Set the text content to the theme name
                         themesContainer.appendChild(themeElement); // Append the theme element to the container
+                        themeElement.addEventListener("click", () => {
+                           // Hide all theme divs
+                            themeDivs.forEach(div => {
+                                div.classList.remove('active'); // Remove the 'active' class
+                             });
+
+                            // Show the corresponding theme div
+                            const selectedThemeDiv = document.querySelector(`.${themeObject.theme.toLowerCase().replace(" ", "")}`);
+                            if (selectedThemeDiv) {
+                                const themeContainer = selectedThemeDiv.querySelector('.container')
+                                const randomWord = document.createElement("h2");
+                                const number = Math.floor(Math.random() * themeObject.words.length);
+                                selectedThemeDiv.classList.add('active');
+                                randomWord.textContent = themeObject.words[number];
+                                themeContainer.appendChild(randomWord)
+                                mainContent.classList.remove('active');
+                            }
+
+                        });
                     });
                 })
                 .catch(error => console.error("Error fetching JSON data:", error)); // Log any errors
         });
-
-
     </script>
 </body>
 </html>
