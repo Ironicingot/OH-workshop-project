@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Charades Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #74ebd5, #9face6);
+            margin: 0;
+        }
+        .game-container {
+            text-align: center;
+            padding: 20px;
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 10px;
+            font-size: 1rem;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            color: #fff;
+            background: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        .message {
+            margin-top: 20px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        .success {
+            color: green;
+        }
+        .failure {
+            color: red;
+        }
+        .gun {
+            margin-top: 20px;
+            font-size: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <h1>Decrypt and Guess</h1>
+        <input type="text" id="cipherInput" placeholder="Enter decrypted word...">
+        <button id="submitButton">Submit</button>
+        <div class="message" id="message"></div>
+        <div class="gun" id="gun"></div>
+    </div>
+
+    <script>
+        // Caesar Cipher decryption function
+        function decryptCaesarCipher(text, shift) {
+            return text
+                .split('')
+                .map(char => {
+                    if (char.match(/[a-z]/i)) {
+                        const code = char.charCodeAt(0);
+                        const base = code >= 65 && code <= 90 ? 65 : 97;
+                        return String.fromCharCode(((code - base - shift + 26) % 26) + base);
+                    }
+                    return char;
+                })
+                .join('');
+        }
+
+        document.getElementById('submitButton').addEventListener('click', () => {
+            const input = document.getElementById('cipherInput').value.trim();
+            const decryptedWord = decryptCaesarCipher(input, 7); // Decrypt with shift 7
+
+            fetch('db.json')
+                .then(response => response.json())
+                .then(data => {
+                    let found = false;
+                    for (const theme of data.themes) {
+                        if (theme.words.includes(decryptedWord)) {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    const messageDiv = document.getElementById('message');
+                    const gunDiv = document.getElementById('gun');
+                    if (found) {
+                        messageDiv.textContent = `Correct! The word is "${decryptedWord}".`;
+                        messageDiv.className = 'message success';
+                        gunDiv.textContent = '🔫 Pew!';
+                    } else {
+                        messageDiv.textContent = `Wrong! The word "${decryptedWord}" is not valid.`;
+                        messageDiv.className = 'message failure';
+                        gunDiv.textContent = '💥 Boom!';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        });
+    </script>
+</body>
+</html>
