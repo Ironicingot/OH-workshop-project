@@ -146,7 +146,7 @@
         }
         
 
-        .famous{
+        .famouspeople{
             position:absolute;
             width:100%;
             display:grid;
@@ -158,7 +158,7 @@
             transition: opacity 1s ease-in-out, visibility 0s linear 1s;
         }
 
-        .famous.active{
+        .famouspeople.active{
             opacity: 1;
             visibility: visible;
             pointer-events: auto;
@@ -263,13 +263,13 @@
     </div>
     <div class="animals">
         <h1>Theme Selected: Animals</h1>
-        <div></div>
+        <div class="container"></div>
     </div>
     <div class="sports">
         <h1>Theme Selected: Sports</h1>
         <div class="container"></div>
     </div>
-    <div class="famous">
+    <div class="famouspeople">
         <h1>Theme Selected: Famous People</h1>
         <div class="container"></div>
     </div>
@@ -303,7 +303,8 @@
                 .then(response => response.json()) // Parse the JSON response
                 .then(data => {
                     const themesContainer = document.getElementById("themes"); // Select the container where themes will be displayed
-                    const themeDivs = document.querySelectorAll('.movies, .animals, .sports, .famous, .food, .places');
+                    const themeDivs = document.querySelectorAll('.movies, .animals, .sports, .famouspeople, .food, .places');
+                    console.log(themeDivs)
 
                     // Iterate through each theme in the data
                     data.themes.forEach(themeObject => {
@@ -325,6 +326,8 @@
                                 const number = Math.floor(Math.random() * themeObject.words.length);
                                 selectedThemeDiv.classList.add('active');
                                 randomWord.textContent = themeObject.words[number];
+                                console.log(themeContainer)
+                                console.log(randomWord)
                                 themeContainer.appendChild(randomWord)
                                 mainContent.classList.remove('active');
                             }
