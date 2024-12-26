@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Team A: Actors</title>
     <style>
+        /* General Body Styling */
         body {
             font-family: 'Arial', sans-serif;
             margin: 0;
@@ -13,10 +14,12 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            width: 100vw;
             background: linear-gradient(135deg, #74ebd5, #9face6);
             overflow: hidden;
         }
-        
+
+        /* Splash Screen */
         .splash-screen {
             display: flex;
             flex-direction: column;
@@ -29,15 +32,15 @@
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
             animation: fadeIn 1.5s ease-in-out forwards;
         }
-    
+
         .splash-screen h1 {
             font-size: 3rem;
             margin-bottom: 20px;
             color: #333;
             animation: slideIn 1.5s ease-in-out forwards;
         }
-    
-        .splash-screen button {
+
+        .splash-screen button, .nextBtn {
             padding: 12px 20px;
             font-size: 1rem;
             font-weight: bold;
@@ -48,23 +51,25 @@
             cursor: pointer;
             transition: background-color 0.3s, transform 0.3s;
         }
-    
+
         .splash-screen button:hover {
             background: #0056b3;
             transform: scale(1.05);
         }
-    
+
+        /* Keyframes for Animation */
         @keyframes fadeIn {
             0% { opacity: 0; transform: scale(0.9); }
             100% { opacity: 1; transform: scale(1); }
         }
-    
+
         @keyframes slideIn {
             0% { opacity: 0; transform: translateY(-20px); }
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        .main-content {
+        /* Main Content Styling */
+        .main-content, .movies, .animals, .sports, .famouspeople, .food, .places {
             position: absolute;
             top: 0;
             left: 0;
@@ -80,146 +85,41 @@
             transition: opacity 1s ease-in-out, visibility 0s linear 1s;
         }
 
-        .main-content.active {
+        /* Active State */
+        .main-content.active, 
+        .movies.active, 
+        .animals.active, 
+        .sports.active, 
+        .famouspeople.active, 
+        .food.active, 
+        .places.active {
             opacity: 1;
             visibility: visible;
             pointer-events: auto;
             transition: opacity 1s ease-in-out, visibility 0s linear 0s;
-        }
-
-        .movies{
-            position:absolute;
-            width:100%;
-            display:grid;
             justify-content: center;
             align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            transition: opacity 1s ease-in-out, visibility 0s linear 1s;
+            /* text-align:center; */
         }
 
-        .movies.active{
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
-            transition: opacity 1s ease-in-out, visibility 0s linear 0s;
-        }
-
-
-        .animals{
-            position:absolute;
-            width:100%;
-            display:grid;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            transition: opacity 1s ease-in-out, visibility 0s linear 1s;
-        }
-
-        .animals.active{
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
-            transition: opacity 1s ease-in-out, visibility 0s linear 0s;
-        }
-
-        .sports{
-            position:absolute;
-            width:100%;
-            display:grid;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            transition: opacity 1s ease-in-out, visibility 0s linear 1s;
-        }
-
-        .sports.active{
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
-            transition: opacity 1s ease-in-out, visibility 0s linear 0s;
-        }
-        
-
-        .famouspeople{
-            position:absolute;
-            width:100%;
-            display:grid;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            transition: opacity 1s ease-in-out, visibility 0s linear 1s;
-        }
-
-        .famouspeople.active{
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
-            transition: opacity 1s ease-in-out, visibility 0s linear 0s;
-        }
-
-
-        .food{
-            position:absolute;
-            width:100%;
-            display:grid;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            transition: opacity 1s ease-in-out, visibility 0s linear 1s;
-        }
-
-        .food.active{
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
-            transition: opacity 1s ease-in-out, visibility 0s linear 0s;
-        }
-
-        .places{
-            position:absolute;
-            width:100%;
-            display:grid;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            transition: opacity 1s ease-in-out, visibility 0s linear 1s;
-        }
-
-        .places.active{
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
-            transition: opacity 1s ease-in-out, visibility 0s linear 0s;
-        }
-
+        /* Button Grid Container */
         .container {
             display: grid;
-            grid-template-columns: auto auto auto;
-            column-gap: 200px;
-            gap: 20px;
-            padding: 20px; /* Adds padding inside the container */
+            grid-template-columns:auto auto auto;
+            column-gap:200px;
+            row-gap:60px;
+            align-items: center;
+            text-align:center;
             justify-content: center;
         }
 
-        .container > button {
+        #themes > button {
             background-color: #ffffff;
             border: 2px solid #007bff;
-            width: 150px;
-            height: 80px;
+            width:100%;
+            height:100%;
             padding: 10px;
-            font-size: 1.2rem;
+            font-size: 3rem;
             text-align: center;
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
@@ -227,19 +127,46 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
         }
 
-        .container > button:hover {
-            transform: scale(1.05); /* Slightly enlarges on hover */
-            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
+        #themes > button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
         }
 
+        /* Random Word Styling */
         .container > h2 {
-            margin-top: 20px; /* Adds space between the title and the random word */
+            margin: auto;
             font-size: 2rem;
             color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;  /* Take the full width of the container */
+            text-align: center;
+            margin:auto;
+            
         }
-        
+
+        .container + button{
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #fff;
+            background: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            text-align:center;
+            margin-top: 50px;
+        }
+
+        div > .theme{
+            display:grid;
+            grid-template-columns: auto;
+        }
 
     </style>
 </head>
@@ -259,27 +186,27 @@
 
     <div class="movies">
         <h1>Theme Selected: Movies</h1>
-        <div class="container"></div>
+        <div class="container theme"></div>
     </div>
     <div class="animals">
         <h1>Theme Selected: Animals</h1>
-        <div class="container"></div>
+        <div class="container theme"></div>
     </div>
     <div class="sports">
         <h1>Theme Selected: Sports</h1>
-        <div class="container"></div>
+        <div class="container theme"></div>
     </div>
     <div class="famouspeople">
         <h1>Theme Selected: Famous People</h1>
-        <div class="container"></div>
+        <div class="container theme"></div>
     </div>
     <div class="food">
         <h1>Theme Selected: Food</h1>
-        <div class="container"></div>
+        <div class="container theme"></div>
     </div>
     <div class="places">
         <h1>Theme Selected: Places</h1>
-        <div class="container"></div>
+        <div class="container theme"></div>
     </div>
 
     <script>
@@ -304,8 +231,7 @@
                 .then(data => {
                     const themesContainer = document.getElementById("themes"); // Select the container where themes will be displayed
                     const themeDivs = document.querySelectorAll('.movies, .animals, .sports, .famouspeople, .food, .places');
-                    console.log(themeDivs)
-
+                    
                     // Iterate through each theme in the data
                     data.themes.forEach(themeObject => {
                         const themeElement = document.createElement("button"); // Create a new paragraph element
@@ -313,23 +239,47 @@
                         themeElement.textContent = themeObject.theme; // Set the text content to the theme name
                         themesContainer.appendChild(themeElement); // Append the theme element to the container
                         themeElement.addEventListener("click", () => {
+                            console.log("Theme selected:", themeObject.theme);
                            // Hide all theme divs
+                            mainContent.classList.remove('active');
                             themeDivs.forEach(div => {
                                 div.classList.remove('active'); // Remove the 'active' class
+                                console.log("Removing active class from:", div);
                              });
 
                             // Show the corresponding theme div
                             const selectedThemeDiv = document.querySelector(`.${themeObject.theme.toLowerCase().replace(" ", "")}`);
                             if (selectedThemeDiv) {
+                                console.log("Activating div for theme:", selectedThemeDiv);
                                 const themeContainer = selectedThemeDiv.querySelector('.container')
                                 const randomWord = document.createElement("h2");
-                                const number = Math.floor(Math.random() * themeObject.words.length);
+                                const number = Math.floor(Math.random() * 10);
                                 selectedThemeDiv.classList.add('active');
                                 randomWord.textContent = themeObject.words[number];
-                                console.log(themeContainer)
-                                console.log(randomWord)
-                                themeContainer.appendChild(randomWord)
-                                mainContent.classList.remove('active');
+                                themeContainer.appendChild(randomWord);
+
+                                const nextBtn = document.createElement("button");
+                                nextBtn.textContent = "Next";
+                                nextBtn.setAttribute("class","nextBtn");
+                                themeContainer.appendChild(nextBtn);
+
+                                nextBtn.addEventListener('click',() => {
+                                    themeDivs.forEach(div => {
+                                        div.classList.remove('active'); // Remove the 'active' class
+                                        console.log("Removing active class from:", div);
+                                       
+                                    });
+
+                                    setTimeout(() => {
+                                        mainContent.classList.add('active');
+                                        themeContainer.removeChild(randomWord)
+                                        themeContainer.removeChild(nextBtn)
+                                    }, 1000); // Match the transition duration
+
+                                    
+                                })
+                            } else {
+                                console.error("Could not find corresponding div for theme:", themeObject.theme);
                             }
 
                         });
@@ -337,6 +287,7 @@
                 })
                 .catch(error => console.error("Error fetching JSON data:", error)); // Log any errors
         });
+
     </script>
 </body>
 </html>
