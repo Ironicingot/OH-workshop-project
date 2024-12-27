@@ -72,7 +72,7 @@
         }
 
         /* Main Content Styling */
-        .main-content, .movies, .animals, .sports, .famouspeople, .food, .places {
+        .main-content, .movies, .animals, .sports, .famouspeople, .food, .places, .thanks{
             position: absolute;
             top: 0;
             left: 0;
@@ -95,7 +95,8 @@
         .sports.active, 
         .famouspeople.active, 
         .food.active, 
-        .places.active {
+        .places.active, 
+        .thanks.active {
             opacity: 1;
             visibility: visible;
             pointer-events: auto;
@@ -210,12 +211,18 @@
         <div class="container theme"></div>
     </div>
 
+    <div class="thanks">
+        <h1>Thank you for playing!</h1>
+    </div>
+
     <script>
 
         // DOM Elements
         const startButton = document.getElementById('startButton');
         const splashScreen = document.querySelector('.splash-screen');
         const mainContent = document.querySelector('.main-content');
+        const thanks = document.querySelector('.thanks');
+        let counter = 0;
     
         // Transition from splash screen to main content
         startButton.addEventListener('click', () => {
@@ -251,6 +258,7 @@
                             // Show the corresponding theme div
                             const selectedThemeDiv = document.querySelector(`.${themeObject.theme.toLowerCase().replace(" ", "")}`);
                             if (selectedThemeDiv) {
+                                // Making selected choice visible as well as pulling data from db.json
                                 console.log("Activating div for theme:", selectedThemeDiv);
                                 const themeContainer = selectedThemeDiv.querySelector('.container')
                                 const randomWord = document.createElement("p");
@@ -259,10 +267,13 @@
                                 randomWord.textContent = themeObject.words[number];
                                 themeContainer.appendChild(randomWord);
 
+                                // Next Button
+
                                 const nextBtn = document.createElement("button");
                                 nextBtn.textContent = "Next";
                                 nextBtn.setAttribute("class","nextBtn");
                                 themeContainer.appendChild(nextBtn);
+                                
 
                                 nextBtn.addEventListener('click',() => {
                                     themeDivs.forEach(div => {
@@ -271,12 +282,23 @@
                                        
                                     });
 
+                                    // Counter to limit kids to 10 tries
+
+                                    counter = counter + 1;
+                                    if (counter == 10){
+                                        setTimeout(() => {
+                                            thanks.classList.add('active');
+                                        }, 1000);
+                                        return
+                                        
+                                    }
+
                                     setTimeout(() => {
                                         mainContent.classList.add('active');
                                         themeContainer.removeChild(randomWord)
                                         themeContainer.removeChild(nextBtn)
                                     }, 1000); // Match the transition duration
-
+                                    
                                     
                                 })
                             } else {
