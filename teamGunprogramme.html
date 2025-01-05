@@ -77,7 +77,7 @@
         <div class="message" id="message"></div>
         <div class="gun" id="gun"></div>
         <div class="score">
-            Correct: <span id="correctCount">0</span> / 15<br>
+            Correct: <span id="correctCount">0</span> / 10<br>
             Wrong: <span id="wrongCount">0</span>
         </div>
     </div>
@@ -130,8 +130,8 @@
         function endGame() {
             cipherInput.disabled = true;
             submitButton.disabled = true;
-            messageDiv.textContent = correctCount >= 15 ? "You win!" : "Game over!";
-            messageDiv.className = correctCount >= 15 ? "message success" : "message failure";
+            messageDiv.textContent = correctCount >= 10 ? "You win!" : "Game over!";
+            messageDiv.className = correctCount >= 10 ? "message success" : "message failure";
             gunDiv.textContent = "🔚";
         }
 
@@ -158,7 +158,7 @@
                         messageDiv.className = 'message success';
                         gunDiv.textContent = '🔫 Pew!';
 
-                        if (correctCount >= 15) {
+                        if (correctCount >= 10) {
                             endGame();
                         }
                     } else {
