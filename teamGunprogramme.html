@@ -59,15 +59,27 @@
             margin-top: 20px;
             font-size: 2rem;
         }
+        .timer {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+        }
+        .score {
+            margin-top: 10px;
+        }
     </style>
 </head>
 <body>
     <div class="game-container">
         <h1>Decrypt and Guess</h1>
+        <div class="timer" id="timer">Time Left: 3:00</div>
         <input type="text" id="cipherInput" placeholder="Enter decrypted word...">
         <button id="submitButton">Submit</button>
         <div class="message" id="message"></div>
         <div class="gun" id="gun"></div>
+        <div class="score">
+            Correct: <span id="correctCount">0</span> / 15<br>
+            Wrong: <span id="wrongCount">0</span>
+        </div>
     </div>
 
     <script>
@@ -86,8 +98,46 @@
                 .join('');
         }
 
-        document.getElementById('submitButton').addEventListener('click', () => {
-            const input = document.getElementById('cipherInput').value.trim();
+        let correctCount = 0;
+        let wrongCount = 0;
+        let timeLeft = 180; // 3 minutes in seconds
+        let timer;
+
+        const timerElement = document.getElementById('timer');
+        const correctCountElement = document.getElementById('correctCount');
+        const wrongCountElement = document.getElementById('wrongCount');
+        const cipherInput = document.getElementById('cipherInput');
+        const submitButton = document.getElementById('submitButton');
+        const messageDiv = document.getElementById('message');
+        const gunDiv = document.getElementById('gun');
+
+        // Start the timer
+        function startTimer() {
+            timer = setInterval(() => {
+                timeLeft--;
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerElement.textContent = `Time Left: ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        // End the game
+        function endGame() {
+            cipherInput.disabled = true;
+            submitButton.disabled = true;
+            messageDiv.textContent = correctCount >= 15 ? "You win!" : "Game over!";
+            messageDiv.className = correctCount >= 15 ? "message success" : "message failure";
+            gunDiv.textContent = "🔚";
+        }
+
+        // Check the guess
+        submitButton.addEventListener('click', () => {
+            const input = cipherInput.value.trim();
             const decryptedWord = decryptCaesarCipher(input, 7); // Decrypt with shift 7
 
             fetch('db.json')
@@ -101,22 +151,38 @@
                         }
                     }
 
-                    const messageDiv = document.getElementById('message');
-                    const gunDiv = document.getElementById('gun');
                     if (found) {
+                        correctCount++;
+                        correctCountElement.textContent = correctCount;
                         messageDiv.textContent = `Correct! The word is "${decryptedWord}".`;
                         messageDiv.className = 'message success';
                         gunDiv.textContent = '🔫 Pew!';
+
+                        if (correctCount >= 15) {
+                            endGame();
+                        }
                     } else {
+                        wrongCount++;
+                        wrongCountElement.textContent = wrongCount;
                         messageDiv.textContent = `Wrong! The word "${decryptedWord}" is not valid.`;
                         messageDiv.className = 'message failure';
                         gunDiv.textContent = '💥 Boom!';
+
+                        // Deduct one correct word for every 3 wrong guesses
+                        if (wrongCount % 3 === 0 && correctCount > 0) {
+                            correctCount--;
+                            correctCountElement.textContent = correctCount;
+                        }
                     }
+
+                    cipherInput.value = '';
                 })
                 .catch(error => {
                     console.error('Error fetching data:', error);
                 });
         });
+
+        startTimer();
     </script>
 </body>
 </html>
