@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Theme Page</title>
+    <title>Team A: Actors</title>
     <style>
         /* General Body Styling */
         body {
@@ -19,23 +19,109 @@
             overflow: hidden;
         }
 
-        /* Theme Page Styling */
-        .theme-page {
+        /* Splash Screen */
+        .splash-screen {
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: linear-gradient(135deg, #74ebd5, #9face6);
-            height: 100vh;
-            width: 100vw;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 40px 60px;
+            border-radius: 15px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            animation: fadeIn 1.5s ease-in-out forwards;
         }
 
+        .splash-screen h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .splash-screen button {
+            padding: 12px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #fff;
+            background: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .splash-screen button:hover {
+            background: #0056b3;
+            transform: scale(1.05);
+        }
+
+        /* Main Content Styling */
+        .main-content, .theme-page, .thanks {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 1s ease-in-out, visibility 0s linear 1s;
+        }
+
+        /* Active State */
+        .main-content.active,
+        .theme-page.active,
+        .thanks.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transition: opacity 1s ease-in-out, visibility 0s linear 0s;
+        }
+
+        /* Themes Grid Styling */
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .container button {
+            background-color: #28a745;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            padding: 20px;
+            font-size: 1.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .container button:hover {
+            transform: scale(1.05);
+            background-color: #218838;
+        }
+
+        /* Enhanced Theme Page Styling */
         .theme-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
             background: rgba(255, 255, 255, 0.9);
             padding: 30px 40px;
             border-radius: 15px;
             box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.1);
-            text-align: center;
+            width: 80%;
+            max-width: 500px;
         }
 
         .theme-content h1 {
@@ -84,9 +170,22 @@
     </style>
 </head>
 <body>
+    <!-- Splash Screen -->
+    <div class="splash-screen">
+        <h1>Team A: Actors</h1>
+        <button id="startButton">Start</button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <h1>Select a Theme:</h1>
+        <div class="container" id="themes"></div>
+    </div>
+
+    <!-- Theme Page -->
     <div class="theme-page">
         <div class="theme-content">
-            <h1 id="themeTitle">Theme: Sports</h1>
+            <h1 id="themeTitle">Theme: </h1>
             <p id="randomWord">Press "Generate Word" to display a word</p>
             <div class="button-group">
                 <button id="generateButton">Generate Word</button>
@@ -95,32 +194,81 @@
         </div>
     </div>
 
-    <script>
-        // Simulated Theme Data
-        const currentTheme = {
-            theme: "Sports",
-            words: ["Soccer", "Basketball", "Tennis", "Cricket", "Baseball", "Hockey"]
-        };
+    <!-- Thanks Page -->
+    <div class="thanks">
+        <h1>Thank you for playing!</h1>
+    </div>
 
+    <script>
         // DOM Elements
+        const startButton = document.getElementById('startButton');
+        const splashScreen = document.querySelector('.splash-screen');
+        const mainContent = document.querySelector('.main-content');
+        const themesContainer = document.getElementById('themes');
+        const themePage = document.querySelector('.theme-page');
+        const thanksPage = document.querySelector('.thanks');
         const themeTitle = document.getElementById('themeTitle');
         const randomWord = document.getElementById('randomWord');
         const generateButton = document.getElementById('generateButton');
         const backButton = document.getElementById('backButton');
 
-        // Display Theme Name
-        themeTitle.textContent = `Theme: ${currentTheme.theme}`;
+        let counter = 0;
+        let currentTheme = null;
+        let themesData = [];
 
-        // Generate a Random Word
-        generateButton.addEventListener('click', () => {
-            const randomIndex = Math.floor(Math.random() * currentTheme.words.length);
-            randomWord.textContent = currentTheme.words[randomIndex];
+        // Transition from splash screen to main content
+        startButton.addEventListener('click', () => {
+            splashScreen.style.opacity = '0';
+            setTimeout(() => {
+                splashScreen.style.display = 'none';
+                mainContent.classList.add('active');
+            }, 1000);
         });
 
-        // Back Button Functionality
+        // Fetch and display themes
+        document.addEventListener("DOMContentLoaded", () => {
+            fetch('db.json')
+                .then(response => response.json())
+                .then(data => {
+                    themesData = data.themes;
+                    themesData.forEach(theme => {
+                        const themeButton = document.createElement('button');
+                        themeButton.textContent = theme.theme;
+                        themesContainer.appendChild(themeButton);
+
+                        themeButton.addEventListener('click', () => {
+                            currentTheme = theme;
+                            mainContent.classList.remove('active');
+                            themePage.classList.add('active');
+                            themeTitle.textContent = `Theme: ${currentTheme.theme}`;
+                            randomWord.textContent = "Press 'Generate Word' to display a word";
+                        });
+                    });
+                })
+                .catch(error => console.error("Error fetching JSON data:", error));
+        });
+
+        // Generate a random word
+        generateButton.addEventListener('click', () => {
+            if (currentTheme) {
+                const randomIndex = Math.floor(Math.random() * currentTheme.words.length);
+                randomWord.textContent = currentTheme.words[randomIndex];
+            }
+        });
+
+        // Back to themes
         backButton.addEventListener('click', () => {
-            alert('Returning to Themes Page (Replace this with actual navigation)');
-            // Example: Replace with navigation logic
+            themePage.classList.remove('active');
+            mainContent.classList.add('active');
+        });
+
+        // Handle counter and thank you page
+        generateButton.addEventListener('click', () => {
+            counter++;
+            if (counter === 10) {
+                themePage.classList.remove('active');
+                thanksPage.classList.add('active');
+            }
         });
     </script>
 </body>
