@@ -39,7 +39,7 @@
             color: #333;
         }
 
-        .splash-screen button, .nextBtn {
+        .splash-screen button {
             padding: 12px 20px;
             font-size: 1rem;
             font-weight: bold;
@@ -49,22 +49,15 @@
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.3s;
-            text-align: center;
         }
 
-        .splash-screen button:hover, .nextBtn:hover {
+        .splash-screen button:hover {
             background: #0056b3;
             transform: scale(1.05);
         }
 
-        /* Keyframes for Animation */
-        @keyframes fadeIn {
-            0% { opacity: 0; transform: scale(0.9); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
         /* Main Content Styling */
-        .main-content, .movies, .animals, .sports, .famouspeople, .food, .places, .thanks {
+        .main-content, .theme-page, .thanks {
             position: absolute;
             top: 0;
             left: 0;
@@ -81,13 +74,8 @@
         }
 
         /* Active State */
-        .main-content.active, 
-        .movies.active, 
-        .animals.active, 
-        .sports.active, 
-        .famouspeople.active, 
-        .food.active, 
-        .places.active, 
+        .main-content.active,
+        .theme-page.active,
         .thanks.active {
             opacity: 1;
             visibility: visible;
@@ -95,7 +83,7 @@
             transition: opacity 1s ease-in-out, visibility 0s linear 0s;
         }
 
-        /* Button Grid Container */
+        /* Themes Grid Styling */
         .container {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
@@ -104,43 +92,51 @@
             justify-content: center;
         }
 
-        #themes > button {
+        .container button {
             background-color: #28a745;
             color: #ffffff;
             border: none;
             border-radius: 5px;
-            padding: 10px 20px;
+            padding: 20px;
             font-size: 1.5rem;
             font-weight: bold;
             cursor: pointer;
             transition: transform 0.3s, background-color 0.3s;
         }
 
-        #themes > button:hover {
+        .container button:hover {
             transform: scale(1.05);
             background-color: #218838;
         }
 
-        /* Random Word Styling */
-        .theme p {
-            margin: auto;
-            font-size: 2rem;
-            color: #ffffff;
+        .theme-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
             text-align: center;
         }
 
-        .container + button {
-            padding: 12px 20px;
+        .theme-content p {
+            font-size: 2rem;
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        .theme-content button {
+            background-color: #007bff;
+            color: white;
             font-size: 1rem;
             font-weight: bold;
-            color: #fff;
-            background: #007bff;
+            padding: 12px 20px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             transition: background-color 0.3s, transform 0.3s;
-            text-align: center;
-            margin-top: 50px;
+        }
+
+        .theme-content button:hover {
+            background-color: #0056b3;
+            transform: scale(1.05);
         }
     </style>
 </head>
@@ -157,21 +153,37 @@
         <div class="container" id="themes"></div>
     </div>
 
-    <!-- Themes -->
-    <div class="movies"><h1>Theme Selected: Movies</h1><div class="container theme"></div></div>
-    <div class="animals"><h1>Theme Selected: Animals</h1><div class="container theme"></div></div>
-    <div class="sports"><h1>Theme Selected: Sports</h1><div class="container theme"></div></div>
-    <div class="famouspeople"><h1>Theme Selected: Famous People</h1><div class="container theme"></div></div>
-    <div class="food"><h1>Theme Selected: Food</h1><div class="container theme"></div></div>
-    <div class="places"><h1>Theme Selected: Places</h1><div class="container theme"></div></div>
-    <div class="thanks"><h1>Thank you for playing!</h1></div>
+    <!-- Theme Page -->
+    <div class="theme-page">
+        <div class="theme-content">
+            <h1 id="themeTitle">Theme: </h1>
+            <p id="randomWord">Press "Generate Word" to display a word</p>
+            <button id="generateButton">Generate Word</button>
+            <button id="backButton">Back to Themes</button>
+        </div>
+    </div>
+
+    <!-- Thanks Page -->
+    <div class="thanks">
+        <h1>Thank you for playing!</h1>
+    </div>
 
     <script>
+        // DOM Elements
         const startButton = document.getElementById('startButton');
         const splashScreen = document.querySelector('.splash-screen');
         const mainContent = document.querySelector('.main-content');
-        const thanks = document.querySelector('.thanks');
+        const themesContainer = document.getElementById('themes');
+        const themePage = document.querySelector('.theme-page');
+        const thanksPage = document.querySelector('.thanks');
+        const themeTitle = document.getElementById('themeTitle');
+        const randomWord = document.getElementById('randomWord');
+        const generateButton = document.getElementById('generateButton');
+        const backButton = document.getElementById('backButton');
+
         let counter = 0;
+        let currentTheme = null;
+        let themesData = [];
 
         // Transition from splash screen to main content
         startButton.addEventListener('click', () => {
@@ -182,49 +194,50 @@
             }, 1000);
         });
 
-        document.addEventListener("DOMContentLoaded", function () {
+        // Fetch and display themes
+        document.addEventListener("DOMContentLoaded", () => {
             fetch('db.json')
                 .then(response => response.json())
                 .then(data => {
-                    const themesContainer = document.getElementById("themes");
-                    const themeDivs = document.querySelectorAll('.movies, .animals, .sports, .famouspeople, .food, .places');
-                    
-                    data.themes.forEach(themeObject => {
-                        const themeButton = document.createElement("button");
-                        themeButton.textContent = themeObject.theme;
+                    themesData = data.themes;
+                    themesData.forEach(theme => {
+                        const themeButton = document.createElement('button');
+                        themeButton.textContent = theme.theme;
                         themesContainer.appendChild(themeButton);
 
-                        themeButton.addEventListener("click", () => {
+                        themeButton.addEventListener('click', () => {
+                            currentTheme = theme;
                             mainContent.classList.remove('active');
-                            themeDivs.forEach(div => div.classList.remove('active'));
-                            const selectedThemeDiv = document.querySelector(`.${themeObject.theme.toLowerCase().replace(" ", "")}`);
-                            if (selectedThemeDiv) {
-                                const themeContainer = selectedThemeDiv.querySelector('.container');
-                                selectedThemeDiv.classList.add('active');
-                                const randomWord = document.createElement("p");
-                                randomWord.textContent = themeObject.words[Math.floor(Math.random() * themeObject.words.length)];
-                                themeContainer.appendChild(randomWord);
-
-                                const nextBtn = document.createElement("button");
-                                nextBtn.textContent = "Next";
-                                nextBtn.className = "nextBtn";
-                                themeContainer.appendChild(nextBtn);
-
-                                nextBtn.addEventListener('click', () => {
-                                    themeDivs.forEach(div => div.classList.remove('active'));
-                                    counter++;
-                                    if (counter === 10) {
-                                        thanks.classList.add('active');
-                                        return;
-                                    }
-                                    mainContent.classList.add('active');
-                                    themeContainer.innerHTML = '';
-                                });
-                            }
+                            themePage.classList.add('active');
+                            themeTitle.textContent = `Theme: ${currentTheme.theme}`;
+                            randomWord.textContent = "Press 'Generate Word' to display a word";
                         });
                     });
                 })
                 .catch(error => console.error("Error fetching JSON data:", error));
+        });
+
+        // Generate a random word
+        generateButton.addEventListener('click', () => {
+            if (currentTheme) {
+                const randomIndex = Math.floor(Math.random() * currentTheme.words.length);
+                randomWord.textContent = currentTheme.words[randomIndex];
+            }
+        });
+
+        // Back to themes
+        backButton.addEventListener('click', () => {
+            themePage.classList.remove('active');
+            mainContent.classList.add('active');
+        });
+
+        // Handle counter and thank you page
+        generateButton.addEventListener('click', () => {
+            counter++;
+            if (counter === 10) {
+                themePage.classList.remove('active');
+                thanksPage.classList.add('active');
+            }
         });
     </script>
 </body>
