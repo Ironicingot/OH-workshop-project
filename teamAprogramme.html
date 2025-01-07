@@ -3,314 +3,209 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team A: Actors</title>
+    <title>Decrypt and Guess</title>
     <style>
-        /* General Body Styling */
         body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
+            font-family: 'Orbitron', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            width: 100vw;
-            background: linear-gradient(135deg, #74ebd5, #9face6);
+            background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+            margin: 0;
             overflow: hidden;
         }
 
-        /* Splash Screen */
-        .splash-screen {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
+        .game-container {
+            position: relative;
             text-align: center;
-            background: rgba(255, 255, 255, 0.8);
-            padding: 40px 60px;
-            border-radius: 15px;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-            animation: fadeIn 1.5s ease-in-out forwards;
         }
 
-        .splash-screen h1 {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            color: #333;
-            animation: slideIn 1.5s ease-in-out forwards;
+        .bomb-image {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
         }
 
-        .splash-screen button, .nextBtn {
-            padding: 12px 20px;
-            font-size: 1rem;
+        .timer {
+            position: absolute;
+            top: 35%;
+            left: 43%;
+            transform: translate(-50%, -50%);
+            font-size: 1.5rem;
             font-weight: bold;
-            color: #fff;
-            background: #007bff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
-            width:10vw;
-            text-align: center;
-            justify-self: center;
+            color: #ff0000;
+            text-shadow: 0 0 8px #ff0000, 0 0 16px #ff6600;
+            animation: pulse 1s infinite alternate;
         }
 
-        .splash-screen button:hover {
-            background: #0056b3;
+        @keyframes pulse {
+            from {
+                transform: translate(-50%, -50%) scale(1);
+                color: #ff3300;
+            }
+            to {
+                transform: translate(-50%, -50%) scale(1.1);
+                color: #ff0000;
+            }
+        }
+
+        input[type="text"], button {
+            font-size: 1.5rem;
+            margin: 1rem 0;
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 400px;
+        }
+
+        button {
+            background-color: #ff4500;
+            color: white;
+            cursor: pointer;
+            box-shadow: 0 0 20px #ff4500;
+            transition: background-color 0.3s, transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #ff6347;
             transform: scale(1.05);
         }
 
-        /* Keyframes for Animation */
-        @keyframes fadeIn {
-            0% { opacity: 0; transform: scale(0.9); }
-            100% { opacity: 1; transform: scale(1); }
-        }
-
-        @keyframes slideIn {
-            0% { opacity: 0; transform: translateY(-20px); }
-            100% { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Main Content Styling */
-        .main-content, .movies, .animals, .sports, .famouspeople, .food, .places, .thanks{
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            opacity: 0;
-            visibility: hidden;
-            pointer-events: none;
-            transition: opacity 1s ease-in-out, visibility 0s linear 1s;
-        }
-
-        /* Active State */
-        .main-content.active, 
-        .movies.active, 
-        .animals.active, 
-        .sports.active, 
-        .famouspeople.active, 
-        .food.active, 
-        .places.active, 
-        .thanks.active {
-            opacity: 1;
-            visibility: visible;
-            pointer-events: auto;
-            transition: opacity 1s ease-in-out, visibility 0s linear 0s;
-            justify-content: center;
-            align-items: center;
-            /* text-align:center; */
-        }
-
-        /* Button Grid Container */
-        .container {
-            display: grid;
-            grid-template-columns:auto auto auto;
-            column-gap:7rem;
-            row-gap:2rem;
-            align-items: center;
-            text-align:center;
-            justify-content: center;
-        }
-        #themes > button {
-            background-color: #28a745; /* Green base color */
-            color: #ffffff;
-            border: none;
-            border-radius: 5px;
-            padding: 10px 20px;
-            font-size: 2rem;
-            font-weight:bold;
-            cursor: pointer;
-            transition: transform 0.3s, background-color 0.3s; /* Added transform transition */
-            width: 20vw;
-            height:20vh;
-        }
-
-        #themes > button:hover {
-            transform: scale(1.05); /* Slight scale effect */
-            background-color: #218838; /* Darker green on hover */
-        }
-
-        /* Random Word Styling */
-        .container > p {
-            margin: auto;
-            font-size: 5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;  /* Take the full width of the container */
-            text-align: center;
-            margin:auto;
-            background: linear-gradient(to right, red, orange, yellow, green, blue, indigo, violet);
-            -webkit-background-clip: text;
-            color: transparent;
-            
-        }
-
-        .container + button{
-            padding: 12px 20px;
-            font-size: 1rem;
+        .message {
+            margin-top: 1rem;
+            font-size: 1.2rem;
             font-weight: bold;
-            color: #fff;
-            background: #007bff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s, transform 0.3s;
-            text-align:center;
-            margin-top: 50px;
+            color: #ffffff;
         }
 
-        div > .theme{
-            display:grid;
-            grid-template-columns: auto;
+        .success {
+            color: #00ff00;
+        }
+
+        .failure {
+            color: #ff0000;
+        }
+
+        .score {
+            margin-top: 1.5rem;
+            color: #ffffff;
         }
 
     </style>
 </head>
 <body>
-    <!-- Splash Screen -->
-    <div class="splash-screen">
-        <h1>Team A: Actors</h1>
-        <button id="startButton">Start</button>
-    </div>
-
-    <!-- Main Content -->
-    <div class="main-content">
-        <h1>Themes:</h1>
-        <div class="container" id="themes">
+    <div class="game-container">
+        <h1>Decrypt and Guess</h1>
+        <div class="bomb-container">
+            <img src="bomb-timer-interactive-classroom.jpg" alt="Bomb" class="bomb-image">
+            <div class="timer" id="timer">Time Left: 3:00</div>
+        </div>
+        <input type="text" id="cipherInput" placeholder="Enter decrypted word...">
+        <button id="submitButton">Submit</button>
+        <div class="message" id="message"></div>
+        <div class="score">
+            Correct: <span id="correctCount">0</span> / 10<br>
+            Wrong: <span id="wrongCount">0</span>
         </div>
     </div>
 
-    <div class="movies">
-        <h1>Theme Selected: Movies</h1>
-        <div class="container theme"></div>
-    </div>
-    <div class="animals">
-        <h1>Theme Selected: Animals</h1>
-        <div class="container theme"></div>
-    </div>
-    <div class="sports">
-        <h1>Theme Selected: Sports</h1>
-        <div class="container theme"></div>
-    </div>
-    <div class="famouspeople">
-        <h1>Theme Selected: Famous People</h1>
-        <div class="container theme"></div>
-    </div>
-    <div class="food">
-        <h1>Theme Selected: Food</h1>
-        <div class="container theme"></div>
-    </div>
-    <div class="places">
-        <h1>Theme Selected: Places</h1>
-        <div class="container theme"></div>
-    </div>
-
-    <div class="thanks">
-        <h1>Thank you for playing!</h1>
-    </div>
-
     <script>
-
-        // DOM Elements
-        const startButton = document.getElementById('startButton');
-        const splashScreen = document.querySelector('.splash-screen');
-        const mainContent = document.querySelector('.main-content');
-        const thanks = document.querySelector('.thanks');
-        let counter = 0;
-    
-        // Transition from splash screen to main content
-        startButton.addEventListener('click', () => {
-            splashScreen.style.opacity = '0';
-            setTimeout(() => {
-                splashScreen.style.display = 'none';
-                mainContent.classList.add('active');
-            }, 1000); // Match the transition duration
-        });
-
-        document.addEventListener("DOMContentLoaded", function () {
-            fetch('db.json') // Fetch the JSON data from the file
-                .then(response => response.json()) // Parse the JSON response
-                .then(data => {
-                    const themesContainer = document.getElementById("themes"); // Select the container where themes will be displayed
-                    const themeDivs = document.querySelectorAll('.movies, .animals, .sports, .famouspeople, .food, .places');
-                    
-                    // Iterate through each theme in the data
-                    data.themes.forEach(themeObject => {
-                        const themeElement = document.createElement("button"); // Create a new paragraph element
-                        themeElement.setAttribute("id",themeObject.theme.toLowerCase().replace(" ","")+'Button')
-                        themeElement.textContent = themeObject.theme; // Set the text content to the theme name
-                        themesContainer.appendChild(themeElement); // Append the theme element to the container
-                        themeElement.addEventListener("click", () => {
-                            console.log("Theme selected:", themeObject.theme);
-                           // Hide all theme divs
-                            mainContent.classList.remove('active');
-                            themeDivs.forEach(div => {
-                                div.classList.remove('active'); // Remove the 'active' class
-                                console.log("Removing active class from:", div);
-                             });
-
-                            // Show the corresponding theme div
-                            const selectedThemeDiv = document.querySelector(`.${themeObject.theme.toLowerCase().replace(" ", "")}`);
-                            if (selectedThemeDiv) {
-                                // Making selected choice visible as well as pulling data from db.json
-                                console.log("Activating div for theme:", selectedThemeDiv);
-                                const themeContainer = selectedThemeDiv.querySelector('.container')
-                                const randomWord = document.createElement("p");
-                                const number = Math.floor(Math.random() * 10);
-                                selectedThemeDiv.classList.add('active');
-                                randomWord.textContent = themeObject.words[number];
-                                themeContainer.appendChild(randomWord);
-
-                                // Next Button
-
-                                const nextBtn = document.createElement("button");
-                                nextBtn.textContent = "Next";
-                                nextBtn.setAttribute("class","nextBtn");
-                                themeContainer.appendChild(nextBtn);
-                                
-
-                                nextBtn.addEventListener('click',() => {
-                                    themeDivs.forEach(div => {
-                                        div.classList.remove('active'); // Remove the 'active' class
-                                        console.log("Removing active class from:", div);
-                                       
-                                    });
-
-                                    // Counter to limit kids to 10 tries
-
-                                    counter = counter + 1;
-                                    if (counter == 10){
-                                        setTimeout(() => {
-                                            thanks.classList.add('active');
-                                        }, 1000);
-                                        return
-                                        
-                                    }
-
-                                    setTimeout(() => {
-                                        mainContent.classList.add('active');
-                                        themeContainer.removeChild(randomWord)
-                                        themeContainer.removeChild(nextBtn)
-                                    }, 1000); // Match the transition duration
-                                    
-                                    
-                                })
-                            } else {
-                                console.error("Could not find corresponding div for theme:", themeObject.theme);
-                            }
-
-                        });
-                    });
+        // Caesar Cipher decryption logic
+        function decryptCaesarCipher(text, shift) {
+            return text
+                .split('')
+                .map(char => {
+                    if (char.match(/[a-z]/i)) {
+                        const code = char.charCodeAt(0);
+                        const base = code >= 65 && code <= 90 ? 65 : 97;
+                        return String.fromCharCode(((code - base - shift + 26) % 26) + base);
+                    }
+                    return char;
                 })
-                .catch(error => console.error("Error fetching JSON data:", error)); // Log any errors
+                .join('');
+        }
+
+        // Game variables
+        let correctCount = 0;
+        let wrongCount = 0;
+        let timeLeft = 180;
+        let timer;
+
+        // DOM elements
+        const timerElement = document.getElementById('timer');
+        const correctCountElement = document.getElementById('correctCount');
+        const wrongCountElement = document.getElementById('wrongCount');
+        const cipherInput = document.getElementById('cipherInput');
+        const submitButton = document.getElementById('submitButton');
+        const messageDiv = document.getElementById('message');
+
+        // Timer function
+        function startTimer() {
+            timer = setInterval(() => {
+                timeLeft--;
+                const minutes = Math.floor(timeLeft / 60);
+                const seconds = timeLeft % 60;
+                timerElement.textContent = `Time Left: ${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+
+                if (timeLeft <= 0) {
+                    clearInterval(timer);
+                    endGame();
+                }
+            }, 1000);
+        }
+
+        // End game function
+        function endGame() {
+            cipherInput.disabled = true;
+            submitButton.disabled = true;
+            messageDiv.textContent = correctCount >= 10 ? "You win!" : "Game over!";
+            messageDiv.className = correctCount >= 10 ? "message success" : "message failure";
+        }
+
+        // Submit button logic
+        submitButton.addEventListener('click', () => {
+            const input = cipherInput.value.trim();
+            const decryptedWord = decryptCaesarCipher(input, 7);
+
+            // Fetch JSON data
+            fetch('/db.json') // Ensure 'db.json' is in your public directory in Vercel
+                .then(response => response.json())
+                .then(data => {
+                    let found = false;
+                    for (const theme of data.themes) {
+                        if (theme.words.includes(decryptedWord)) {
+                            found = true;
+                            break;
+                        }
+                    }
+
+                    if (found) {
+                        correctCount++;
+                        correctCountElement.textContent = correctCount;
+                        messageDiv.textContent = `Correct! The word is "${decryptedWord}".`;
+                        messageDiv.className = 'message success';
+
+                        if (correctCount >= 10) {
+                            endGame();
+                        }
+                    } else {
+                        wrongCount++;
+                        wrongCountElement.textContent = wrongCount;
+                        messageDiv.textContent = `Wrong! The word "${decryptedWord}" is not valid.`;
+                        messageDiv.className = 'message failure';
+                    }
+
+                    cipherInput.value = '';
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
         });
 
+        // Start the timer when the page loads
+        startTimer();
     </script>
 </body>
 </html>
