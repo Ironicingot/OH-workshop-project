@@ -131,7 +131,7 @@
     <div class="welcome-container active">
         <h1>Decrypt and Guess</h1>
         <p>You’re the only one who can stop the bomb from exploding!<br><br>
-           There’s a bomb set to explode in 5 minutes. The only way to defuse it is by decrypting 10 encrypted words correctly. 
+           There’s a bomb set to explode in 5 minutes. The only way to defuse it is by decrypting 5 encrypted words correctly. 
            Your mission is simple: decrypt the words and enter them one by one.<br><br>
            Press <strong>Enter</strong> to begin the challenge.</p>
     </div>
@@ -147,7 +147,7 @@
         <button id="submitButton">Submit</button>
         <div class="message" id="message"></div>
         <div class="score">
-            Correct: <span id="correctCount">0</span> / 10<br>
+            Correct: <span id="correctCount">0</span> / 5<br>
             Wrong: <span id="wrongCount">0</span>
         </div>
     </div>
@@ -193,7 +193,7 @@
         const submitButton = document.getElementById('submitButton');
         const messageDiv = document.getElementById('message');
 
-        // Start timer when Enter is pressed
+        // Start timer when Enter is pressed on the welcome screen
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Enter' && welcomeContainer.classList.contains('active')) {
                 welcomeContainer.classList.remove('active');
@@ -221,7 +221,20 @@
             explanationContainer.classList.add('active');
         }
 
+        // Submit word when button is clicked
         submitButton.addEventListener('click', () => {
+            submitWord();
+        });
+
+        // Allow submitting with Enter key
+        cipherInput.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') {
+                event.preventDefault();  // Prevent form submission
+                submitWord();
+            }
+        });
+
+        function submitWord() {
             const input = cipherInput.value.trim();
             const decryptedWord = decryptCaesarCipher(input, 7);
 
@@ -242,7 +255,7 @@
                         messageDiv.textContent = `Correct! The word is "${decryptedWord}".`;
                         messageDiv.className = 'message success';
 
-                        if (correctCount >= 10) {
+                        if (correctCount >= 5) {
                             clearInterval(timer);
                             showExplanation();
                         }
@@ -258,7 +271,7 @@
                 .catch(error => {
                     console.error('Error fetching data:', error);
                 });
-        });
+        }
     </script>
 </body>
 </html>
