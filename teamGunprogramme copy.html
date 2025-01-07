@@ -17,7 +17,7 @@
             overflow: hidden;
         }
 
-        .welcome-container, .game-container {
+        .welcome-container, .game-container, .explanation-container {
             position: absolute;
             top: 0;
             left: 0;
@@ -33,18 +33,20 @@
             transition: opacity 0.5s ease-in-out, visibility 0s linear 0.5s;
         }
 
-        .welcome-container.active, .game-container.active {
+        .welcome-container.active,
+        .game-container.active,
+        .explanation-container.active {
             opacity: 1;
             visibility: visible;
             transition: opacity 0.5s ease-in-out, visibility 0s linear 0s;
         }
 
-        .welcome-container h1 {
+        .welcome-container h1, .explanation-container h1 {
             font-size: 3rem;
             margin-bottom: 20px;
         }
 
-        .welcome-container p {
+        .welcome-container p, .explanation-container p {
             font-size: 1.2rem;
             margin: 10px 20px;
             line-height: 1.5;
@@ -133,7 +135,7 @@
            Your mission is simple: decrypt the words and enter them one by one.<br><br>
            Press <strong>Enter</strong> to begin the challenge.</p>
     </div>
-
+        
     <!-- Game Page -->
     <div class="game-container">
         <h1>Decrypt and Guess</h1>
@@ -148,6 +150,17 @@
             Correct: <span id="correctCount">0</span> / 10<br>
             Wrong: <span id="wrongCount">0</span>
         </div>
+    </div>
+
+    <!-- Explanation Page -->
+    <div class="explanation-container">
+        <h1>Caesar Cipher and Blockchain</h1>
+        <p>The Caesar Cipher is a way to hide messages by shifting the letters of the alphabet.</p>
+        <p>Imagine the Caesar Cipher is like a locked treasure chest:</p>
+        <p>You have a key (the shift number) to open it and read the message inside. Without the key, no one can understand what’s inside unless they guess it.</p>
+        <p>Now imagine Blockchain as a vault filled with many treasure chests:</p>
+        <p>Each chest is locked with a unique, very complex key. Only the person with the correct private key can open their chest. If someone tries to tamper with even one chest, the entire vault will notice, and the system will reject the change.</p>
+        <p>Both use keys to protect information, but Blockchain is much more secure and advanced!</p>
     </div>
 
     <script>
@@ -172,6 +185,7 @@
 
         const welcomeContainer = document.querySelector('.welcome-container');
         const gameContainer = document.querySelector('.game-container');
+        const explanationContainer = document.querySelector('.explanation-container');
         const timerElement = document.getElementById('timer');
         const correctCountElement = document.getElementById('correctCount');
         const wrongCountElement = document.getElementById('wrongCount');
@@ -197,16 +211,14 @@
 
                 if (timeLeft <= 0) {
                     clearInterval(timer);
-                    endGame();
+                    showExplanation();
                 }
             }, 1000);
         }
 
-        function endGame() {
-            cipherInput.disabled = true;
-            submitButton.disabled = true;
-            messageDiv.textContent = correctCount >= 10 ? "You win! The bomb has been defused!" : "Game over! The bomb exploded!";
-            messageDiv.className = correctCount >= 10 ? "message success" : "message failure";
+        function showExplanation() {
+            gameContainer.classList.remove('active');
+            explanationContainer.classList.add('active');
         }
 
         submitButton.addEventListener('click', () => {
@@ -232,7 +244,7 @@
 
                         if (correctCount >= 10) {
                             clearInterval(timer);
-                            endGame();
+                            showExplanation();
                         }
                     } else {
                         wrongCount++;
