@@ -132,7 +132,8 @@
         <h1>Decrypt and Guess</h1>
         <p>You’re the only one who can stop the bomb from exploding!<br><br>
            There’s a bomb set to explode in 5 minutes. The only way to defuse it is by decrypting 5 encrypted words correctly. 
-           Your mission is simple: decrypt the words and enter them one by one.<br><br>
+           <br><br>Your mission is simple:<br> Decrypt the words and enter them one by one.
+           However, everyone must guess the same answer correctly before doing so. Goodluck. <br><br>
            Press <strong>Enter</strong> to begin the challenge.</p>
     </div>
         
@@ -159,8 +160,7 @@
         <p>Caesar Cipher is like a locked treasure chest:</p>
         <p>You must attain a key to open it and read the message inside. In order to open it, you need to solve the puzzle (the shift number) to get the key.</p>
         <p>Now imagine Blockchain as a vault filled with many treasure chests:</p>
-        <p>Each chest is locked with a unique, very complex key. Only the person with the correct private key can open their chest. If someone tries to tamper with even one chest, the entire vault will notice, and the system will reject the change.</p>
-        
+        <p>Each chest is locked with a unique, very complex key. Only the person with the correct private key can open their chest. If someone tries to tamper with even one chest, the entire vault will notice, and the system will reject the change.</p>  
     </div>
 
     <script>
@@ -177,12 +177,12 @@
                 })
                 .join('');
         }
-
+    
         let correctCount = 0;
         let wrongCount = 0;
         let timeLeft = 300; // 5 minutes in seconds
         let timer;
-
+    
         const welcomeContainer = document.querySelector('.welcome-container');
         const gameContainer = document.querySelector('.game-container');
         const explanationContainer = document.querySelector('.explanation-container');
@@ -192,7 +192,7 @@
         const cipherInput = document.getElementById('cipherInput');
         const submitButton = document.getElementById('submitButton');
         const messageDiv = document.getElementById('message');
-
+    
         // Start timer when Enter is pressed on the welcome screen
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Enter' && welcomeContainer.classList.contains('active')) {
@@ -201,31 +201,37 @@
                 startTimer();
             }
         });
-
+    
         function startTimer() {
             timer = setInterval(() => {
                 timeLeft--;
                 const minutes = Math.floor(timeLeft / 60);
                 const seconds = timeLeft % 60;
                 timerElement.textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
-
+    
                 if (timeLeft <= 0) {
                     clearInterval(timer);
-                    showExplanation();
+                    showExplanation(false);
                 }
             }, 1000);
         }
-
-        function showExplanation() {
+    
+        function showExplanation(success) {
             gameContainer.classList.remove('active');
             explanationContainer.classList.add('active');
+            explanationContainer.innerHTML = `
+                <h1>${success ? "Congratulations!" : "Time's Up!"}</h1>
+                <p>${success 
+                    ? "You’ve successfully decrypted all the words and defused the bomb through teamwork and consensus. <br><br> This mirrors how blockchain operates: <br> multiple participants (nodes) must agree on a shared version of the truth (consensus) to ensure the system remains secure and reliable. <br> In blockchain, encryption algorithms like SHA-256 protect data integrity, while consensus mechanisms, such as Proof of Work or Proof of Stake, ensure all participants validate transactions fairly.  <br><br> Your teamwork today reflects the principles of trust and collaboration that make blockchain so powerful!"
+                    : "The bomb exploded, but don’t worry—this was a good chance to for you guys to learn about blockchain's core principles. <br><br> In blockchain, consensus mechanisms require all participants to agree on the state of the system, ensuring data integrity and security. <br><br> Encryption algorithms, such as SHA-256, are used to encode data, making it tamper-proof. <br><br> Just like the whiteboard consensus you used, blockchain relies on collective agreement to maintain trust and prevent tampering. <br><br> Try again to master the principles of encryption and consensus!"}
+                </p>`;
         }
-
+    
         // Submit word when button is clicked
         submitButton.addEventListener('click', () => {
             submitWord();
         });
-
+    
         // Allow submitting with Enter key
         cipherInput.addEventListener('keydown', (event) => {
             if (event.key === 'Enter') {
@@ -233,11 +239,11 @@
                 submitWord();
             }
         });
-
+    
         function submitWord() {
             const input = cipherInput.value.trim();
             const decryptedWord = decryptCaesarCipher(input, 7);
-
+    
             fetch('db.json')
                 .then(response => response.json())
                 .then(data => {
@@ -248,16 +254,16 @@
                             break;
                         }
                     }
-
+    
                     if (found) {
                         correctCount++;
                         correctCountElement.textContent = correctCount;
                         messageDiv.textContent = `Correct! The word is "${decryptedWord}".`;
                         messageDiv.className = 'message success';
-
+    
                         if (correctCount >= 5) {
                             clearInterval(timer);
-                            showExplanation();
+                            showExplanation(true);
                         }
                     } else {
                         wrongCount++;
@@ -265,7 +271,7 @@
                         messageDiv.textContent = `Wrong! The word "${decryptedWord}" is not valid.`;
                         messageDiv.className = 'message failure';
                     }
-
+    
                     cipherInput.value = '';
                 })
                 .catch(error => {
@@ -273,5 +279,6 @@
                 });
         }
     </script>
+    
 </body>
 </html>
