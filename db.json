@@ -56,18 +56,14 @@
         {
             "theme": "Famous People",
             "words": [
-                "albert einstein",
-                "leonardo da vinci",
                 "taylor swift",
                 "michael jackson",
-                "oprah winfrey",
                 "elon musk",
                 "william shakespeare",
                 "barack obama",
                 "beyoncé",
                 "rihanna",
                 "steve jobs",
-                "marie curie",
                 "mark zuckerberg",
                 "serena williams",
                 "cristiano ronaldo"
@@ -88,6 +84,26 @@
                 "pancakes",
                 "sandwich",
                 "fried chicken"
+            ]
+        },
+        {
+            "theme": "Songs",
+            "words": [
+                "as it was",
+                "drivers license",
+                "levitating",
+                "anti-hero",
+                "bad habits",
+                "stay",
+                "good 4 u",
+                "watermelon sugar",
+                "blinding lights",
+                "sunflower",
+                "happier than ever",
+                "shivers",
+                "heat waves",
+                "butter",
+                "dance monkey"
             ]
         }
     ]
