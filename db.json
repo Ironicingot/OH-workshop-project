@@ -3,88 +3,91 @@
         {
             "theme": "Movies",
             "words": [
-                "Titanic",
-                "Avatar",
-                "Jurassic Park",
-                "Frozen",
-                "Harry Potter",
-                "The Avengers",
-                "Spider-Man",
-                "The Lion King"
+                "titanic",
+                "avatar",
+                "jurassic park",
+                "frozen",
+                "harry potter",
+                "the avengers",
+                "the lion king",
+                "the dark knight",
+                "shrek",
+                "finding nemo",
+                "up"
             ]
         },
         {
             "theme": "Animals",
             "words": [
-                "Elephant",
-                "Penguin",
-                "Kangaroo",
-                "Giraffe",
-                "Tiger",
-                "Dolphin",
-                "Panda",
-                "Eagle",
-                "Shark",
-                "Cheetah"
+                "elephant",
+                "penguin",
+                "kangaroo",
+                "giraffe",
+                "tiger",
+                "dolphin",
+                "panda",
+                "eagle",
+                "shark",
+                "cheetah",
+                "peacock",
+                "wolf",
+                "fox"
             ]
         },
         {
             "theme": "Sports",
             "words": [
-                "Soccer",
-                "Basketball",
-                "Tennis",
-                "Cricket",
-                "Baseball",
-                "Hockey",
-                "Golf",
-                "Swimming",
-                "Volleyball",
-                "Boxing"
+                "soccer",
+                "basketball",
+                "tennis",
+                "baseball",
+                "hockey",
+                "golf",
+                "swimming",
+                "volleyball",
+                "boxing",
+                "rugby",
+                "table tennis",
+                "badminton",
+                "skateboarding",
+                "surfing"
             ]
         },
         {
             "theme": "Famous People",
             "words": [
-                "Albert Einstein",
-                "Leonardo da Vinci",
-                "Taylor Swift",
-                "Michael Jackson",
-                "Oprah Winfrey",
-                "Elon Musk",
-                "William Shakespeare",
-                "Barack Obama",
-                "Beyoncé",
-                "Rihanna"
+                "albert einstein",
+                "leonardo da vinci",
+                "taylor swift",
+                "michael jackson",
+                "oprah winfrey",
+                "elon musk",
+                "william shakespeare",
+                "barack obama",
+                "beyoncé",
+                "rihanna",
+                "steve jobs",
+                "marie curie",
+                "mark zuckerberg",
+                "serena williams",
+                "cristiano ronaldo"
             ]
         },
         {
             "theme": "Food",
             "words": [
-                "Pizza",
-                "Sushi",
-                "Burger",
-                "Spaghetti",
-                "Ice Cream",
-                "Tacos",
-                "Donuts",
-                "Chocolate",
-                "Fries"
-            ]
-        },
-        {
-            "theme": "Places",
-            "words": [
-                "Paris",
-                "New York",
-                "Tokyo",
-                "Sydney",
-                "London",
-                "Rome",
-                "Dubai",
-                "Bangkok",
-                "Iceland",
-                "Hawaii"
+                "pizza",
+                "sushi",
+                "burger",
+                "spaghetti",
+                "ice cream",
+                "donuts",
+                "chocolate",
+                "fries",
+                "noodles",
+                "pancakes",
+                "sandwich",
+                "fried chicken"
             ]
         }
     ]

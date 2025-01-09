@@ -211,11 +211,11 @@
         const randomWord = document.getElementById('randomWord');
         const generateButton = document.getElementById('generateButton');
         const backButton = document.getElementById('backButton');
-
-        let counter = 0;
+    
         let currentTheme = null;
         let themesData = [];
-
+        let usedWords = [];
+    
         // Transition from splash screen to main content
         startButton.addEventListener('click', () => {
             splashScreen.style.opacity = '0';
@@ -224,20 +224,21 @@
                 mainContent.classList.add('active');
             }, 1000);
         });
-
+    
         // Fetch and display themes
         document.addEventListener("DOMContentLoaded", () => {
             fetch('db.json')
                 .then(response => response.json())
                 .then(data => {
-                    themesData = data.themes;
+                    themesData = data.themes.filter(theme => theme.theme !== "Places"); // Remove "Places"
                     themesData.forEach(theme => {
                         const themeButton = document.createElement('button');
                         themeButton.textContent = theme.theme;
                         themesContainer.appendChild(themeButton);
-
+    
                         themeButton.addEventListener('click', () => {
                             currentTheme = theme;
+                            usedWords = []; // Reset used words for the new theme
                             mainContent.classList.remove('active');
                             themePage.classList.add('active');
                             themeTitle.textContent = `Theme: ${currentTheme.theme}`;
@@ -247,28 +248,28 @@
                 })
                 .catch(error => console.error("Error fetching JSON data:", error));
         });
-
+    
         // Generate a random word
         generateButton.addEventListener('click', () => {
             if (currentTheme) {
-                const randomIndex = Math.floor(Math.random() * currentTheme.words.length);
-                randomWord.textContent = currentTheme.words[randomIndex];
+                const availableWords = currentTheme.words.filter(word => !usedWords.includes(word));
+                if (availableWords.length === 0) {
+                    alert("You've completed all words in this category!");
+                    themePage.classList.remove('active');
+                    mainContent.classList.add('active');
+                    return;
+                }
+                const randomIndex = Math.floor(Math.random() * availableWords.length);
+                const selectedWord = availableWords[randomIndex];
+                randomWord.textContent = selectedWord;
+                usedWords.push(selectedWord);
             }
         });
-
+    
         // Back to themes
         backButton.addEventListener('click', () => {
             themePage.classList.remove('active');
             mainContent.classList.add('active');
-        });
-
-        // Handle counter and thank you page
-        generateButton.addEventListener('click', () => {
-            counter++;
-            if (counter === 10) {
-                themePage.classList.remove('active');
-                thanksPage.classList.add('active');
-            }
         });
     </script>
 </body>
